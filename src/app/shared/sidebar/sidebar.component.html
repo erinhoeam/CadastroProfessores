@@ -1,0 +1,6 @@
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
+    <div class="list-group">
+        <a class="list-group-item" *ngIf="verificarPermissao('Professor','Ler')" routerLinkActive="active" href="javascript:void(0)" [routerLink]="['/professor/listar']">Professor</a>
+        <a class="list-group-item" *ngIf="verificarPermissao('Usuario','Gravar')" routerLinkActive="active" href="javascript:void(0)" [routerLink]="['/usuario/registrar']">Usuario</a>
+    </div>
+</nav>

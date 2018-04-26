@@ -1,0 +1,315 @@
+<div class="container-fluid">
+  <div class="row" #target>
+    <div class="col">
+      <app-menu-superior></app-menu-superior>      
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-2 col-md-2 col-lg-2 col-xl-2">
+        <app-sidebar></app-sidebar>
+    </div>
+    <div class="col-xs-10 col-md-10 col-lg-10 col-xl-10 main">
+      <div class="card bg-light mb-3">
+        <div class="card-header">
+            <i class="fa {{icon}}"></i> 
+            <span class="bold">{{title}}</span>
+        </div>
+        <div class="card-body">
+          <form novalidate [formGroup]="formulario" (ngSubmit)="save();" >
+            <app-template-form-control-summary [errors]="errors"></app-template-form-control-summary>
+            <div *ngIf="professor != null && professor.id != null">
+              <div class="row">
+                <div class="col-xs-12 col-md-12 profile">
+                  <img src='{{ imagem }}' alt="{{ professor.nome }}" />
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-xs-12 col-md-12">
+                  <input type="file" (change)="fileChange($event)" placeholder="Enviar Foto" accept=".jpg,.bmp,.png"/>
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-xs-12 col-md-12">
+                <button type="button" class="btn btn-success btn-s"
+                          (click)="uploadImage()" [ngClass]="{disabled: fileList == null || fileList.length == 0 || loading}" >
+                      <span class="glyphicon glyphicon-upload"></span> Enviar
+                  </button>
+                </div>
+              </div>
+              <br />
+            </div>
+            <div class="form-row">
+              <div class="form-group col-xs-6 col-md-6">
+                <label class="form-control-label" for="nome">Nome</label>
+                <input maxlength="150" [ngClass]="aplicarCssErro(displayMessage.nome)" class="form-control" id="nome" formControlName="nome" type="text" placeholder="Nome (requerido)" />
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.nome" *ngIf="displayMessage.nome">
+                </app-template-control-form-error>
+              </div>
+              <div class="form-group col-xs-2 col-md-2">
+                <label class="form-control-label" for="cpf">CPF</label>
+                <input maxlength="15" [ngClass]="aplicarCssErro(displayMessage.cpf)" class="form-control" [textMask]="{mask: maskCpf, guide: false}" id="cpf" formControlName="cpf" type="text" placeholder="CPF (requerido)" />
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.cpf" *ngIf="displayMessage.cpf">
+                </app-template-control-form-error>
+              </div>
+              <div class="form-group col-xs-2 col-md-2">
+                <label class="form-control-label" for="sexo">Sexo</label>
+                <select [ngClass]="aplicarCssErro(displayMessage.sexo)" class="form-control" id="pessoa" formControlName="sexo">
+                  <option value="M">Masculino</option>
+                  <option value="F">Feminino</option>
+                </select>
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.sexo" *ngIf="displayMessage.sexo">
+                </app-template-control-form-error>
+              </div>
+              <div class="form-group col-xs-2 col-md-2">
+                <label class="form-control-label" for="dataNascimento">Nascimento</label>
+                <my-date-picker [ngClass]="aplicarCssErro(displayMessage.dataNascimento)" name="dataNascimento" [options]="myDatePickerOptions" formControlName="dataNascimento"></my-date-picker>
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.dataNascimento" *ngIf="displayMessage.dataNascimento">
+                </app-template-control-form-error>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-xs-6 col-md-6">
+                  <label class="form-control-label" for="nomePai">Nome Pai</label>
+                  <input maxlength="150" class="form-control" id="nomePai" formControlName="nomePai" type="text" placeholder="Nome Pai" />
+                </div>
+                <div class="form-group col-xs-6 col-md-6">
+                  <label class="form-control-label" for="nomeMae">Nome Mãe</label>
+                  <input maxlength="150" class="form-control" id="nomeMae" formControlName="nomeMae" type="text" placeholder="Nome Mãe" />
+                </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-xs-2 col-md-2">
+                <label class="form-control-label" for="cep">CEP</label>
+                <input maxlength="8" (blur)="consultaCEP()" class="form-control" id="cep" formControlName="cep" type="text" placeholder="CEP" />
+              </div>
+              <div class="form-group col-xs-10 col-md-10">
+                <label class="form-control-label" for="endereco">Endereço</label>
+                <input maxlength="150" class="form-control" id="endereco" formControlName="endereco" type="text" placeholder="Endereço" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-xs-4 col-md-4">
+                <label class="form-control-label" for="bairro">Bairro</label>
+                <input maxlength="100" class="form-control" id="bairro" formControlName="bairro" type="text" placeholder="Bairro" />
+              </div>
+              <div class="form-group col-xs-4 col-md-4">
+                <label class="form-control-label" for="cidade">Cidade</label>
+                <input maxlength="100" class="form-control" id="cidade" formControlName="cidade" type="text" placeholder="Cidade" />
+              </div>
+              <div class="form-group col-xs-4 col-md-4">
+                <label class="form-control-label" for="estado">Estado</label>
+                <select class="form-control" id="estado" formControlName="estado">
+                  <option *ngFor='let item of estados' value="{{item.uf}}">{{item.nome}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-xs-12 col-md-12">
+                    <label class="form-control-label" for="contatos">Contatos</label>
+                    <input maxlength="50" class="form-control" id="contatos" formControlName="contatos" type="text" placeholder="Contatos" />
+                </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-xs-3 col-md-3">
+                <label class="form-control-label" for="estadoCivil">Estado Civil</label>
+                <select class="form-control" id="estadoCivil" formControlName="estadoCivil">
+                  <option value="S">Solteiro</option>
+                  <option value="C">Casado</option>
+                  <option value="D">Divorciado</option>
+                  <option value="V">Viúvo</option>
+                </select>
+              </div>
+              <div class="form-group col-xs-3 col-md-3">
+                <label class="form-control-label" for="nacionalidade">Nacionalidade</label>
+                <input maxlength="50" [ngClass]="aplicarCssErro(displayMessage.nacionalidade)" class="form-control" id="nacionalidade" formControlName="nacionalidade" type="text" placeholder="Nacionalidade (requerida)" />
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.nacionalidade" *ngIf="displayMessage.nacionalidade">
+                </app-template-control-form-error>
+              </div>
+              <div class="form-group col-xs-3 col-md-3">
+                <label class="form-control-label" for="naturalidade">Naturalidade</label>
+                <input maxlength="50" [ngClass]="aplicarCssErro(displayMessage.naturalidade)" class="form-control" id="naturalidade" formControlName="naturalidade" type="text" placeholder="Naturalidade (requerida)" />
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.naturalidade" *ngIf="displayMessage.naturalidade">
+                </app-template-control-form-error>
+              </div>
+              <div class="form-group col-xs-3 col-md-3">
+                <label class="form-control-label" for="rg">RG</label>
+                <input maxlength="20" [ngClass]="aplicarCssErro(displayMessage.rg)" class="form-control" id="rg" formControlName="rg" type="text" placeholder="RG (requerido)" />
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.rg" *ngIf="displayMessage.rg">
+                </app-template-control-form-error>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-xs-4 col-md-4">
+                <label class="form-control-label" for="pis">PIS</label>
+                <input maxlength="20" class="form-control" id="pis" formControlName="pis" type="text" placeholder="PIS" />
+              </div>
+              <div class="form-group col-xs-4 col-md-4">
+                <label class="form-control-label" for="tituloEleitor">Título Eleitor</label>
+                <input maxlength="30" class="form-control" id="tituloEleitor" formControlName="tituloEleitor" type="text" placeholder="Título Eleitor" />
+              </div>
+              <div class="form-group col-xs-4 col-md-4">
+                <label class="form-control-label" for="cargo">Cargo</label>
+                <input maxlength="50" [ngClass]="aplicarCssErro(displayMessage.cargo)" class="form-control" id="cargo" formControlName="cargo" type="text" placeholder="Cargo (requerido)" />
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.cargo" *ngIf="displayMessage.cargo">
+                </app-template-control-form-error>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-xs-3 col-md-3">
+                <label class="form-control-label" for="matricula">Matrícula</label>
+                <input maxlength="20" [ngClass]="aplicarCssErro(displayMessage.matricula)" class="form-control" id="matricula" formControlName="matricula" type="text" placeholder="Matrícula (requerida)" />
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.matricula" *ngIf="displayMessage.matricula">
+                </app-template-control-form-error>
+              </div>
+              <div class="form-group col-xs-3 col-md-3">
+                <label class="form-control-label" for="classe">Classe</label>
+                <input maxlength="20" [ngClass]="aplicarCssErro(displayMessage.classe)" class="form-control" id="classe" formControlName="classe" type="text" placeholder="Classe (requerida)" />
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.classe" *ngIf="displayMessage.classe">
+                </app-template-control-form-error>
+              </div>
+              <div class="form-group col-xs-3 col-md-3">
+                <label class="form-control-label" for="nivel">Nível</label>
+                <input maxlength="20" [ngClass]="aplicarCssErro(displayMessage.nivel)" class="form-control" id="nivel" formControlName="nivel" type="text" placeholder="Nível (requerido)" />
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.nivel" *ngIf="displayMessage.nivel">
+                </app-template-control-form-error>
+              </div>
+              <div class="form-group col-xs-3 col-md-3">
+                <label class="form-control-label" for="dataAdmissao">Admissão</label>
+                <my-date-picker [ngClass]="aplicarCssErro(displayMessage.dataAdmissao)" name="dataAdmissao" [options]="myDatePickerOptions" formControlName="dataAdmissao"></my-date-picker>
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.dataAdmissao" *ngIf="displayMessage.dataAdmissao">
+                </app-template-control-form-error>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-xs-7 col-md-7">
+                <label class="form-control-label" for="lotacao">Lotação</label>
+                <input maxlength="200" [ngClass]="aplicarCssErro(displayMessage.lotacao)" class="form-control" id="lotacao" formControlName="lotacao" type="text" placeholder="Lotação (requerida)" />
+                <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.lotacao" *ngIf="displayMessage.lotacao">
+                </app-template-control-form-error>
+              </div>
+              <div class="form-group col-xs-3 col-md-3">
+                  <label class="form-control-label" for="vinculo">Vínculo</label>
+                  <input maxlength="100" class="form-control" id="vinculo" formControlName="vinculo" type="text" placeholder="Vínculo" />
+              </div>
+              <div class="form-group col-xs-2 col-md-2">
+                <label class="form-control-label" for="cargaHoraria">Carga Horária</label>
+                <input class="form-control" id="cargaHoraria" formControlName="cargaHoraria" type="number" placeholder="Carga Horária" />
+              </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-xs-2 col-md-2">
+                    <div class="form-check">
+                      <input class="form-check-input" id="readaptado" formControlName="readaptado" type="checkbox" />
+                      <label class="form-check-label" for="readaptado">Readaptado</label>
+                    </div>
+                  </div>
+              <div class="form-group col-xs-2 col-md-2">
+                <div class="form-check">
+                  <input class="form-check-input" id="outroVinculoEmpregaticio" formControlName="outroVinculoEmpregaticio" type="checkbox" />
+                  <label class="form-check-label" for="outroVinculoEmpregaticio">Outro vínculo</label>
+                </div>
+              </div>
+              <div class="form-group col-xs-4 col-md-4">
+                <label class="form-control-label" for="regimeDoOutroVinculo">Regime do outro vínculo</label>
+                <input maxlength="100" class="form-control" id="regimeDoOutroVinculo" formControlName="regimeDoOutroVinculo" type="text" placeholder="Regime outro vínculo." />
+              </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-xs-3 col-md-3">
+                  <label class="form-control-label" for="secretariaDeEducacao">Secretária de Educação</label>
+                  <input maxlength="100" class="form-control" id="secretariaDeEducacao" formControlName="secretariaDeEducacao" type="text" placeholder="Secretária de Educação" />
+                </div>
+                <div class="form-group col-xs-3 col-md-3">
+                  <label class="form-control-label" for="gestaoEscolar">Gestão Escolar</label>
+                  <input maxlength="100" class="form-control" id="classe" formControlName="gestaoEscolar" type="text" placeholder="Gestão Escolar" />
+                </div>
+                <div class="form-group col-xs-3 col-md-3">
+                  <label class="form-control-label" for="areaDeAtuacao">Área Atuação</label>
+                  <input maxlength="100" [ngClass]="aplicarCssErro(displayMessage.areaDeAtuacao)" class="form-control" id="areaDeAtuacao" formControlName="areaDeAtuacao" type="text" placeholder="Área Atuação (requerida)" />
+                  <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.areaDeAtuacao" *ngIf="displayMessage.areaDeAtuacao">
+                  </app-template-control-form-error>
+                </div>
+                <div class="form-group col-xs-3 col-md-3">
+                    <label class="form-control-label" for="ensinoFundamentalAnosFinais">Ensino Fundamental Anos Finais</label>
+                    <input maxlength="100" [ngClass]="aplicarCssErro(displayMessage.ensinoFundamentalAnosFinais)" class="form-control" id="ensinoFundamentalAnosFinais" formControlName="ensinoFundamentalAnosFinais" type="text" placeholder="Ensino Fundamental Anos Finais (requerido)" />
+                    <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.ensinoFundamentalAnosFinais" *ngIf="displayMessage.ensinoFundamentalAnosFinais">
+                    </app-template-control-form-error>
+                </div>
+              </div>
+
+              <div class="form-row">
+                  <div class="form-group col-xs-6 col-md-6">
+                    <label class="form-control-label" for="ensinoMedio">Ensino Médio</label>
+                    <input maxlength="100" [ngClass]="aplicarCssErro(displayMessage.ensinoMedio)" class="form-control" id="ensinoMedio" formControlName="ensinoMedio" type="text" placeholder="Ensino Médio (requerido)" />
+                    <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.ensinoMedio" *ngIf="displayMessage.ensinoMedio">
+                    </app-template-control-form-error>
+                  </div>
+                  <div class="form-group col-xs-6 col-md-6">
+                    <label class="form-control-label" for="graduacao">Graduação</label>
+                    <input maxlength="100" [ngClass]="aplicarCssErro(displayMessage.graduacao)" class="form-control" id="graduacao" formControlName="graduacao" type="text" placeholder="Graduação (requerida)" />
+                    <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.graduacao" *ngIf="displayMessage.graduacao">
+                    </app-template-control-form-error>
+                  </div>
+                </div>
+
+              <div class="form-row">
+                <div class="form-group col-xs-2 col-md-2">
+                  <div class="form-check">
+                    <input class="form-check-input" id="temEspecializacao" formControlName="temEspecializacao" type="checkbox" />
+                    <label class="form-check-label" for="temEspecializacao">Especialização?</label>
+                  </div>
+                </div>
+                <div class="form-group col-xs-10 col-md-10">
+                  <label class="form-control-label" for="especializacao">Especialização</label>
+                  <input maxlength="100" class="form-control" id="especializacao" formControlName="especializacao" type="text" placeholder="Especialização" />
+                </div>
+              </div>
+
+              <div class="form-row">
+                  <div class="form-group col-xs-2 col-md-2">
+                    <div class="form-check">
+                      <input class="form-check-input" id="temMestrado" formControlName="temMestrado" type="checkbox" />
+                      <label class="form-check-label" for="temMestrado">Mestrado?</label>
+                    </div>
+                  </div>
+                  <div class="form-group col-xs-10 col-md-10">
+                    <label class="form-control-label" for="mestrado">Mestrado</label>
+                    <input maxlength="100" class="form-control" id="mestrado" formControlName="mestrado" type="text" placeholder="Mestrado" />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-xs-2 col-md-2">
+                      <div class="form-check">
+                        <input class="form-check-input" id="temDoutorado" formControlName="temDoutorado" type="checkbox" />
+                        <label class="form-check-label" for="temDoutorado">Doutorado?</label>
+                      </div>
+                    </div>
+                    <div class="form-group col-xs-10 col-md-10">
+                      <label class="form-control-label" for="doutorado">Doutorado</label>
+                      <input maxlength="100" class="form-control" id="doutorado" formControlName="doutorado" type="text" placeholder="Doutorado" />
+                    </div>
+                  </div>
+                
+              <div class="form-group">
+                <div class="col-md-4 col-md-offset-2">
+                  <span><button (click)="scrollToElement(target)" class="btn btn-success" type="submit" [disabled]="loading">Salvar</button></span>
+                  &nbsp;<span><a routerLink="/professor/listar" class="btn btn-primary">Voltar</a></span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

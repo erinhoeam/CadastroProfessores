@@ -1,0 +1,13 @@
+.form-check{
+    margin-top: 17% !important;
+}
+.profile img{
+    width: 200px;
+    height: 200px;
+}
+@media (max-width: 700px){
+    .profile img{
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+}

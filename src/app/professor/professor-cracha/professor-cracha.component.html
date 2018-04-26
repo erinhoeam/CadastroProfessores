@@ -1,0 +1,43 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12">
+      <div class="card bg-light mb-3">
+        <div class="card-header">
+            <i class="fa fa-credit-card"></i> <span class="bold">{{title}}</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xs-12 col-md-12 col-lg-12 profile">
+                  <img src='{{ imagem }}' alt="{{ professor.nome }}" />
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-xs-12 col-md-12 col-lg-12">
+                <label class="form-control-label" for="nome" >Nome</label>
+                <p id="nome" class="bold">{{this.professor.nome | uppercase}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-12 col-lg-12">
+                <label class="form-control-label" for="dataNascimento">Data Nascimento</label>
+                <p id="dataNascimento" class="bold">{{this.professor.dataNascimento | date: 'dd/MM/yyyy'}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-12 col-lg-12">
+                <label class="form-control-label" for="cpf">CPF</label>
+                <p id="cpf" class="bold">{{this.professor.cpf | cpfMask}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-12 col-lg-12">
+                <label class="form-control-label" for="matricula">Matrícula</label>
+                <p id="matricula" class="bold">{{this.professor.matricula}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

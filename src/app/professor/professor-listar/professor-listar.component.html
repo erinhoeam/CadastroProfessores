@@ -1,0 +1,77 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <app-menu-superior></app-menu-superior>      
+    </div>
+  </div>
+<div class="row">
+  <div class="col-sm-3 col-md-2 col-lg-2 col-xl-2 sidebar">
+    <app-sidebar></app-sidebar>
+  </div>
+  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2 col-xl-10 col-xl-offset-2 main">
+      <div class="card bg-light mb-3">
+        <div class="card-header">
+            <i class="fa fa-list-ul"></i> <span class="bold">{{title}}</span>
+        </div>
+        <div class="card-body">
+        <a class="btn btn-primary" [routerLink]="['/professor/novo']" >Novo Professor</a>
+        <br /><br />
+        <form novalidate [formGroup]="formulario">
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="nome">Nome</label>
+              <input class="form-control" id="nome" name="nome" placeholder="Nome" type="text" formControlName="nome" />
+            </div>
+            <div class="form-group col">
+                <label for="cpf">CPF</label>
+                <input class="form-control" id="cpf" name="cpf" placeholder="CPF" type="text" formControlName="cpf" />
+            </div>
+            <div class="form-group col">
+                <label for="matricula">Matrícula</label>
+                <input class="form-control" id="matricula" name="matricula" placeholder="Matrícula" type="text" formControlName="matricula" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <button [disabled]="loading" class="btn btn-primary" (click)="listarProfessores(1)">Listar</button>
+            </div>
+          </div>
+        </form>
+        <hr />
+        <table class="table table-striped table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th>Matrícula</th>
+              <th>Nome</th>
+              <th>Nascimento</th>
+              <th>CPF</th>
+              <th>Editar</th>
+              <th>Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="professores == null || professores.length==0">
+              <td colspan="5" style="text-align: center">Resgistro não encontrado</td>
+            </tr>
+            <tr *ngFor='let item of professores'>
+                <td width="10%">{{item.matricula}}</td>
+                <td width="40%">{{item.nome}}</td>
+                <td width="10%">{{item.dataNascimento | date: 'dd/MM/yyyy'}}</td>
+                <td width="30%">{{item.cpf | cpfMask}}</td>
+                <td width="5%"><a [routerLink]="['/professor/editar/' + item.id]" class="btn btn-primary">
+                <i class="fa fa-edit" aria-hidden="true"></i></a></td>
+                <td width="5%"><a [routerLink]="['/professor/editar/' + item.id]" class="btn btn-primary">
+                <i class="fa fa-trash" aria-hidden="true"></i></a></td>
+            </tr>
+          </tbody>
+        </table>
+        <app-paginacao [pagina]="pageNumber"
+                       [qtdPorPagina]="rowsPage" 
+                       [totalRegistros]="totalRegistros" 
+                       [qtdAdjacentes]="qtdAdjacentes" 
+                       (onPaginate)="listarProfessores($event)"></app-paginacao>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
