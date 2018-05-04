@@ -33,7 +33,7 @@ export class RecuperarSenhaComponent extends BaseComponent implements OnInit, Af
     super(toastr,vcr,routerC);
 
     this.validationMessages = {
-      email: {
+      emailRecuperar: {
           required: this.message.messages.RECUPERAR_SENHA.EMAIL_REQUIRED,
           email: this.message.messages.RECUPERAR_SENHA.EMAIL_INVALID
       }
@@ -45,7 +45,7 @@ export class RecuperarSenhaComponent extends BaseComponent implements OnInit, Af
 
   ngOnInit() {
     this.formulario = this.fb.group({
-      email: ['', [Validators.required,
+      emailRecuperar: ['', [Validators.required,
       CustomValidators.email]]
     });
 
@@ -58,10 +58,11 @@ export class RecuperarSenhaComponent extends BaseComponent implements OnInit, Af
   recuperar(){
     
     if (this.formIsValid(this.formulario)){
-      let p = Object.assign({}, this.recuperarSenha, this.formulario.value);  
+      this.recuperarSenha = new RecuperarSenha();
+      this.recuperarSenha.Email = this.formulario.get("emailRecuperar").value;  
       
       this.showToastrInfo(this.message.messages.SHARED.MSG_SENDING);
-      this.usuarioService.recuperarSenha(p)
+      this.usuarioService.recuperarSenha(this.recuperarSenha)
       .subscribe(
           result => { this.onSendingComplete(result) },
           error => { this.onError(error) }

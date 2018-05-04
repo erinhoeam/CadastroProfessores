@@ -14,7 +14,8 @@ export class MessageResource{
                 MSG_LISTING: 'Listando...',
                 MSG_SENDING: 'Enviando...',
                 MSG_CONFIRMING: 'Confirmando...',
-                LOGIN: 'Efetuando Login...' 
+                LOGIN: 'Efetuando Login...',
+                MSG_DELETE: 'Excluindo...', 
             },
             PROFESSOR: {
                 NOME_REQUIRED: 'Nome requerido.',

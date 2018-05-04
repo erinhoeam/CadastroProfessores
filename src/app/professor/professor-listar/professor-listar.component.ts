@@ -7,6 +7,7 @@ import { BaseComponent } from "./../../shared/base.component";
 import { ProfessorService } from '../../services/professor.service';
 import { Professor } from '../../models/professor';
 import { RetornoServico } from '../../models/retorno-servico';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-professor-listar',
@@ -14,9 +15,11 @@ import { RetornoServico } from '../../models/retorno-servico';
   styleUrls: ['./professor-listar.component.scss']
 })
 export class ProfessorListarComponent extends BaseComponent implements OnInit {
+  @ViewChild('childModal') public childModal:ModalDirective;
 
   public professores:Professor[];
   formulario: FormGroup;
+  professor:Professor;
 
   constructor(private professorService:ProfessorService,
               public toastr: ToastsManager, 
@@ -47,7 +50,7 @@ export class ProfessorListarComponent extends BaseComponent implements OnInit {
   }
 
   listarProfessores(pagina:Number){
-    
+    this.pageNumber = pagina;
     this.showToastrInfo(this.message.messages.SHARED.MSG_LISTING);
     let nome:String = this.formulario.get("nome").value == '' ? '%20' : this.formulario.get("nome").value;
     let cpf:String = this.formulario.get("cpf").value == '' ? '%20' : this.formulario.get("cpf").value;;
@@ -57,5 +60,20 @@ export class ProfessorListarComponent extends BaseComponent implements OnInit {
     .subscribe(
       response => { this.onListarComplete(response) },
       error => { this.onError(error) });
+  }
+  public showChildModal(id:String):void {
+    this.professor = new Professor();
+    this.professor.id = id;
+    this.childModal.show();
+  }
+  public hideChildModal():void {
+    this.childModal.hide();
+  }
+  public excluir(){
+    this.showToastrInfo(this.message.messages.SHARED.MSG_DELETE);
+    this.professorService.excluir(this.professor.id)
+    .subscribe(
+    result => { this.hideToastrInfo(); this.hideChildModal(); this.listarProfessores(this.pageNumber); },
+    error => { this.onError(error) });
   }
 }

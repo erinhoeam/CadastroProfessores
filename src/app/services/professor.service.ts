@@ -34,6 +34,17 @@ export class ProfessorService extends ServiceBase {
 
             return response;
       }
+      
+      excluir(id: String) : Observable<Professor>{
+            let options = this.obterAuthHeader();
+
+            let response = this.http
+                  .delete(`${this.UrlServiceV1}professor/${id}`, options)
+                  .map(super.extractData)
+                  .catch(super.serviceError);
+
+            return response;
+      }
 
       listar(nome:String, cpf:String, matricula:String, pageNumber:Number,rowsPage:Number) : Observable<RetornoServico>{
             let options = this.obterAuthHeader();

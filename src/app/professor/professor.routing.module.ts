@@ -9,7 +9,7 @@ import { ProfessorListarComponent } from './professor-listar/professor-listar.co
 import { ProfessorCrachaComponent } from './professor-cracha/professor-cracha.component';
 
 const ROUTES: Routes = [
-    { path: '', canActivate: [AuthService], component: ProfessorMainComponent, 
+    { path: '', component: ProfessorMainComponent, 
     children:[
     { path: 'listar', canActivate: [AuthService], component: ProfessorListarComponent, data: [{ claim: { nome: 'Professor', valor: 'Ler' } }] },  
     { path: 'novo', canActivate: [AuthService], component: ProfessorFormComponent, data: [{ claim: { nome: 'Professor', valor: 'Gravar' } }] },

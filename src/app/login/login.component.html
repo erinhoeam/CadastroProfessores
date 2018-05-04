@@ -16,10 +16,10 @@
 			    <form role="form" (ngSubmit)="loginUsuario()" novalidate [formGroup]="formulario">
 					<div class="form-group">
 						<div class="input-group">
-							<div class="input-group-prepend" [ngClass]="aplicarCssErro(displayMessage.email)">
+							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="fa fa-user"></i></span>
 							</div>
-							<input [disabled]="loading" class="form-control input-underline input-lg" id="email" formControlName="email" type="text" placeholder="Email (requerido)" />
+							<input [ngClass]="aplicarCssErro(displayMessage.email)" class="form-control input-underline input-lg" id="email" formControlName="email" type="text" placeholder="Email (requerido)" />
 						</div>
 						<app-template-control-form-error [formFeedBack]="false" [notInline]="false" [msgError]="displayMessage.email" *ngIf="displayMessage.email">
 						</app-template-control-form-error>
@@ -27,10 +27,10 @@
 					</div>
 					<div class="form-group">
 						<div class="input-group">
-							<div class="input-group-prepend" [ngClass]="aplicarCssErro(displayMessage.senha)">
+							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="fa fa-lock"></i></span>
 							</div>
-							<input [disabled]="loading" class="form-control input-underline input-lg" id="senha" formControlName="senha" type="password" placeholder="Senha (requerido)" />
+							<input [ngClass]="aplicarCssErro(displayMessage.senha)" class="form-control input-underline input-lg" id="senha" formControlName="senha" type="password" placeholder="Senha (requerido)" />
 						</div>
 						<app-template-control-form-error [formFeedBack]="false" [notInline]="false" [msgError]="displayMessage.senha" *ngIf="displayMessage.senha">
 						</app-template-control-form-error>

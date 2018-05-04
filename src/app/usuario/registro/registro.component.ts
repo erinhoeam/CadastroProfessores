@@ -80,9 +80,7 @@ export class RegistroComponent extends BaseComponent implements OnInit, AfterVie
 
     if (this.formIsValid(this.formulario)){
 
-      let p = Object.assign({}, this.usuario, this.formulario.value);  
-
-      p.cpfcnpj = p.cpfcnpj.replace(/[^\d]+/g,'');
+      let p = Object.assign({}, this.usuario, this.formulario.value);
 
       this.showToastrInfo(this.message.messages.SHARED.MSG_SAVING);
 

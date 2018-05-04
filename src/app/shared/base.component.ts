@@ -26,12 +26,12 @@ export abstract class BaseComponent {
     public maskCep = [/[0-9]/, /\d/, /\d/,  /\d/, /\d/, '-', /\d/, /\d/, /\d/];
     public maskCnpj = [/[0-9]/, /\d/, '.', /\d/,  /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/,'-',/\d/, /\d/];
     public maskCpf = [/[0-9]/, /\d/, /\d/, '.', /\d/,  /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/];
-    protected totalRegistros:Number = 0;
-    protected pageNumber:Number = 1;
-    protected rowsPage:Number = 5;
-    protected qtdAdjacentes = 5;
+    public totalRegistros:Number = 0;
+    public pageNumber:Number = 1;
+    public rowsPage:Number = 5;
+    public qtdAdjacentes = 5;
     protected urlImagem = environment.urlImagens;
-    protected icon:String;
+    public icon:String;
 
 
     constructor(public toastr: ToastsManager,

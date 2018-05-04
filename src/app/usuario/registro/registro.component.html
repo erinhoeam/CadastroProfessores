@@ -19,35 +19,35 @@
               
               <app-template-form-control-summary [errors]="errors"></app-template-form-control-summary>
 
-              <div class="form-group" [ngClass]="aplicarCssErro(displayMessage.email)">
-                <label class="col-md-2 control-label" for="email">Email</label>
-                <div class="col-md-6">
-                  <input class="form-control" id="email" formControlName="email" type="text" placeholder="Email (requerido)" />
+              <div class="form-row">
+                <div class="form-group col-xs-6 col-md-6">
+                  <label class="form-control-label" for="email">Email</label>
+                  <input [ngClass]="aplicarCssErro(displayMessage.email)" class="form-control" id="email" formControlName="email" type="text" placeholder="Email (requerido)" />
                   <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.email" *ngIf="displayMessage.email">
                   </app-template-control-form-error>
                 </div>
               </div>
 
-              <div class="form-group" [ngClass]="aplicarCssErro(displayMessage.senha)">
-                <label class="col-md-2 control-label" for="senha">Senha</label>
-                <div class="col-md-6">
-                  <input class="form-control" id="senha" formControlName="senha" type="password" placeholder="Senha (requerido)" />
+              <div class="form-row">
+                <div class="form-group col-xs-6 col-md-6">
+                  <label class="form-control-label" for="senha">Senha</label>
+                  <input [ngClass]="aplicarCssErro(displayMessage.senha)" class="form-control" id="senha" formControlName="senha" type="password" placeholder="Senha (requerido)" />
                   <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.senha" *ngIf="displayMessage.senha">
                   </app-template-control-form-error>
                 </div>
               </div>
 
-              <div class="form-group" [ngClass]="aplicarCssErro(displayMessage.confirmeSenha)">
-                <label class="col-md-2 control-label" for="confirmeSenha">Confirme a Senha</label>
-                <div class="col-md-6">
-                  <input class="form-control" id="confirmeSenha" formControlName="confirmeSenha" type="password" placeholder="Confirme a Senha" />
+              <div class="form-row">
+                <div class="form-group col-xs-6 col-md-6">
+                    <label class="form-control-label" for="confirmeSenha">Confirme a Senha</label>
+                  <input [ngClass]="aplicarCssErro(displayMessage.confirmeSenha)" class="form-control" id="confirmeSenha" formControlName="confirmeSenha" type="password" placeholder="Confirme a Senha" />
                   <app-template-control-form-error [notInline]="false" [msgError]="displayMessage.confirmeSenha" *ngIf="displayMessage.confirmeSenha">
                   </app-template-control-form-error>
                 </div>
               </div>
 
-              <div class="form-group">
-                <div class="col-md-4 col-md-offset-2">
+              <div class="form-row">
+                <div class="col-xs-6 col-md-6">
                   <span><button class="btn btn-success" type="submit" [disabled]="loading">Registrar</button></span>
                   &nbsp;&nbsp;
                   <span><button class="btn btn-success" type="button" (click)="generateRandomPassword()">Gerar Senha</button></span>
